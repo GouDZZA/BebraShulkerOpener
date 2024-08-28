@@ -1,6 +1,6 @@
 name: BebraShulkerController
 version: '${project.version}'
-main: by.likebebras.bebrashulkercontroller.BebraShulkerOpener
+main: by.likebebras.bebrashulkercontroller.BebraShulkerController
 api-version: '1.20'
 depend:
   - BebraLib

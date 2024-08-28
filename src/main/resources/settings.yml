@@ -8,4 +8,12 @@ sounds:
     pitch: 1.3
     volume: .7
 
+InvClickOpen:
+  enabled: true
+  click: SHIFT_RIGHT
+
+AirClickOpen:
+  enabled: false
+  needShift: true
+
 # my discord -> {goudzza]

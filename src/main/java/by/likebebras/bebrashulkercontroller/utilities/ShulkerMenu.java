@@ -1,4 +1,4 @@
-package by.likebebras.bebrashulkercontroller;
+package by.likebebras.bebrashulkercontroller.utilities;
 
 import lombok.Getter;
 import org.bukkit.Material;
@@ -16,7 +16,7 @@ public class ShulkerMenu implements InventoryHolder {
     private final ItemStack item;
 
     public ShulkerMenu(ItemStack shulker){
-        this.inv = getShulkerInv(shulker);
+        this.inv = ItemUtils.getShulkerInv(shulker);
         this.item = shulker;
     }
 
@@ -30,11 +30,11 @@ public class ShulkerMenu implements InventoryHolder {
     }
 
     public void close(){
-        if (isNotShulker(item)) return;
+        if (ItemUtils.isNotShulker(item)) return;
 
         BlockStateMeta meta = (BlockStateMeta)item.getItemMeta();
 
-        ShulkerBox box = getShulkerBox(item);
+        ShulkerBox box = ItemUtils.getShulkerBox(item);
 
         if (box == null) return;
         box.getInventory().setContents(this.inv.getContents());
@@ -47,31 +47,5 @@ public class ShulkerMenu implements InventoryHolder {
     @Override
     public @NotNull Inventory getInventory() {
         return inv;
-    }
-
-    private Inventory getShulkerInv(ItemStack item){
-        if (isNotShulker(item)) return null;
-
-        ShulkerBox shulker = (ShulkerBox) ((BlockStateMeta) item.getItemMeta()).getBlockState();
-
-        return shulker.getInventory();
-    }
-
-    private ShulkerBox getShulkerBox(ItemStack item){
-        if (isNotShulker(item)) return null;
-
-        return (ShulkerBox) ((BlockStateMeta) item.getItemMeta()).getBlockState();
-    }
-
-    private boolean isValid(ItemStack item){
-        return item != null && item.getAmount() > 0 && item.getType() != Material.AIR && item.getItemMeta() != null;
-    }
-
-    private boolean isNotShulker(ItemStack item) {
-        if (!isValid(item)) return true;
-
-        if (!(item.getItemMeta() instanceof BlockStateMeta meta)) return true;
-
-        return (!(meta.getBlockState() instanceof ShulkerBox));
     }
 }

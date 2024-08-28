@@ -1,4 +1,4 @@
-package by.likebebras.bebrashulkercontroller;
+package by.likebebras.bebrashulkercontroller.cmds;
 
 import by.likebebras.bebralib.ez.EzPlugin;
 import by.likebebras.bebralib.ez.cmd.EzCommand;

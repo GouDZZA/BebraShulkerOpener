@@ -1,13 +1,14 @@
-package by.likebebras.bebrashulkercontroller;
+package by.likebebras.bebrashulkercontroller.listeners;
 
-import by.likebebras.bebralib.ez.EzConfig;
+import by.likebebras.bebrashulkercontroller.PlayerManager;
+import by.likebebras.bebrashulkercontroller.utilities.Config;
+import by.likebebras.bebrashulkercontroller.utilities.ShulkerMenu;
 import org.bukkit.Material;
 import org.bukkit.block.ShulkerBox;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockPlaceEvent;
-import org.bukkit.event.inventory.ClickType;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.inventory.*;
@@ -16,32 +17,34 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
 
-public class MainListener implements Listener {
+public class InventoryListener implements Listener {
 
-    private final HashMap<UUID, ShulkerMenu> players = new HashMap<>();
-    private final EzConfig cfg;
+    private final Config cfg;
+    private final PlayerManager playerManager;
 
-    public MainListener(EzConfig cfg) {
+    public InventoryListener(Config cfg, PlayerManager manager) {
         this.cfg = cfg;
+        this.playerManager = manager;
     }
 
     @EventHandler
     public void onClick(InventoryClickEvent e){
+        if (!cfg.useInvClick) return;
         if (!(e.getClickedInventory() instanceof PlayerInventory)) return;
 
         @NotNull Player issuer = (Player) e.getWhoClicked();
 
-        if (players.containsKey(issuer.getUniqueId())) {
+        if (playerManager.contains(issuer.getUniqueId())) {
             if (isShulker(e.getCurrentItem()) || isShulker(e.getCursor())){
                 e.setCancelled(true);
             }
         }
 
-        if (e.getClick() == ClickType.SHIFT_RIGHT) {
+        if (e.getClick() == cfg.clickType) {
             if (isShulker(e.getCurrentItem())){
                 ShulkerMenu menu = new ShulkerMenu(e.getCurrentItem());
 
-                if (containsKeyVal(issuer.getUniqueId(), menu)) return;
+                if (playerManager.containsKeyVal(issuer.getUniqueId(), menu)) return;
 
                 e.setCancelled(true);
 
@@ -49,26 +52,26 @@ public class MainListener implements Listener {
 
                 cfg.getSound("settings.yml", "sounds.open").playTo(issuer);
 
-                players.put(issuer.getUniqueId(), menu);
+                playerManager.put(issuer.getUniqueId(), menu);
             }
         }
     }
 
     @EventHandler
     public void onBlockPlace(BlockPlaceEvent e){
-        if (containsKeyItem(e.getPlayer().getUniqueId(), e.getItemInHand())) e.setCancelled(true);
+        if (playerManager.containsKeyItem(e.getPlayer().getUniqueId(), e.getItemInHand())) e.setCancelled(true);
     }
 
     @EventHandler
     public void onClose(InventoryCloseEvent e){
         UUID id = e.getPlayer().getUniqueId();
-        if (players.containsKey(e.getPlayer().getUniqueId())){
+        if (playerManager.contains(e.getPlayer().getUniqueId())){
 
-            players.get(id).close();
+            playerManager.get(id).close();
 
             cfg.getSound("settings.yml", "sounds.close").playTo((Player) e.getPlayer());
 
-            players.remove(id);
+            playerManager.remove(id);
         }
     }
 
@@ -82,13 +85,5 @@ public class MainListener implements Listener {
         if (!(item.getItemMeta() instanceof BlockStateMeta meta)) return false;
 
         return (meta.getBlockState() instanceof ShulkerBox);
-    }
-
-    private boolean containsKeyVal(UUID plr, ShulkerMenu menu){
-        return players.containsKey(plr) && players.get(plr).isSame(menu.getItem());
-    }
-
-    private boolean containsKeyItem(UUID plr, ItemStack itemStack){
-        return players.containsKey(plr) && players.get(plr).isSame(itemStack);
     }
 }
