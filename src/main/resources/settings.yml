@@ -1,0 +1,11 @@
+sounds:
+  open:
+    name: block_shulker_box_open
+    pitch: 1.3
+    volume: .7
+  close:
+    name: block_shulker_box_close
+    pitch: 1.3
+    volume: .7
+
+# my discord -> {goudzza]
