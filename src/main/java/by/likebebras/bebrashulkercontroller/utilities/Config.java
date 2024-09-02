@@ -6,7 +6,7 @@ import org.bukkit.event.inventory.ClickType;
 
 public class Config extends EzConfig {
 
-    public boolean useInteract, useInvClick, needShift;
+    public boolean useInteract, useInvClick, usePickUp, needShift;
     public ClickType clickType;
 
     public Config(EzPlugin plugin) {
@@ -19,6 +19,7 @@ public class Config extends EzConfig {
 
         useInvClick = getBoolean("settings.yml", "InvClickOpen.enabled", true);
         useInteract = getBoolean("settings.yml", "AirClickOpen.enabled", true);
+        usePickUp = getBoolean("settings.yml", "PickUpItems.enabled", true);
 
         needShift = getBoolean("settings.yml", "AirClickOpen.needShift", true);
 

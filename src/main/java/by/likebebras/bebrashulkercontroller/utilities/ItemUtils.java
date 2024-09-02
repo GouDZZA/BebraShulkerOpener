@@ -28,8 +28,6 @@ public class ItemUtils {
     public boolean isNotShulker(ItemStack item) {
         if (!isValid(item)) return true;
 
-        if (!(item.getItemMeta() instanceof BlockStateMeta meta)) return true;
-
-        return (!(meta.getBlockState() instanceof ShulkerBox));
+        return !item.getType().name().endsWith("SHULKER_BOX");
     }
 }

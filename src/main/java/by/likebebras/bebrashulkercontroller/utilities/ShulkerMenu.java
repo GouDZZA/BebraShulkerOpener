@@ -1,7 +1,6 @@
 package by.likebebras.bebrashulkercontroller.utilities;
 
 import lombok.Getter;
-import org.bukkit.Material;
 import org.bukkit.block.ShulkerBox;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;

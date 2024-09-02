@@ -5,6 +5,7 @@ import by.likebebras.bebralib.managers.CommandManager;
 import by.likebebras.bebrashulkercontroller.cmds.ShulkerCommand;
 import by.likebebras.bebrashulkercontroller.listeners.InteractListener;
 import by.likebebras.bebrashulkercontroller.listeners.InventoryListener;
+import by.likebebras.bebrashulkercontroller.listeners.PickUpListener;
 import by.likebebras.bebrashulkercontroller.utilities.Config;
 
 public final class BebraShulkerController extends EzPlugin {
@@ -20,6 +21,7 @@ public final class BebraShulkerController extends EzPlugin {
 
         registerListener(new InventoryListener((Config) cfg, playerManager));
         registerListener(new InteractListener((Config) cfg, playerManager));
+        if (((Config) cfg).usePickUp) registerListener(new PickUpListener((Config) cfg, playerManager));
 
         new ShulkerCommand(this).register(manager);
     }

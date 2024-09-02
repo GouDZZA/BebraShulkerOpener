@@ -24,11 +24,11 @@ public class InteractListener implements Listener {
     @EventHandler
     public void onInteract(PlayerInteractEvent e){
         if (!cfg.useInteract) return;
+        if (e.getAction() != Action.RIGHT_CLICK_AIR) return;
         if (ItemUtils.isNotShulker(e.getItem())) return;
         if (cfg.needShift && !e.getPlayer().isSneaking()) return;
-        if (e.getAction() != Action.RIGHT_CLICK_AIR) return;
 
-        Player p = e.getPlayer() ;
+        Player p = e.getPlayer();
         ShulkerMenu menu = new ShulkerMenu(e.getItem());
 
         cfg.getSound("settings.yml", "sounds.open").playTo(p);
